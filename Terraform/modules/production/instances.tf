@@ -47,8 +47,8 @@ resource "null_resource" "pd_prov" {
  } 
 
    provisioner "file" {
-    source      = "/home/buildagent/keys/ans_pd.pub"
-    destination = "/home/isakovasvitlana/ans_pd.pub"   
+    source      = "/home/buildagent/keys/bs_pd.pub"
+    destination = "/home/isakovasvitlana/bs_pd.pub"   
  } 
   
   provisioner "remote-exec" {

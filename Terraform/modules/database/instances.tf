@@ -44,8 +44,8 @@ resource "null_resource" "mgdb_prov" {
     destination = "/home/isakovasvitlana/db-keys.sh"   
  }  
  provisioner "file" {
-    source      = "/home/buildagent/keys/ans_db.pub"
-    destination = "/home/isakovasvitlana/ans_db.pub"   
+    source      = "/home/buildagent/keys/bs_db.pub"
+    destination = "/home/isakovasvitlana/bs_db.pub"   
  }
   
   provisioner "remote-exec" {
