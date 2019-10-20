@@ -40,15 +40,19 @@ resource "null_resource" "mgdb_prov" {
   }
 
   provisioner "file" {
-    source      = "modules/database/database-tf.sh"
-    destination = "/home/isakovasvitlana/database-tf.sh"   
+    source      = "modules/database/db-keys.sh"
+    destination = "/home/isakovasvitlana/db-keys.sh"   
  }  
+ provisioner "file" {
+    source      = "/home/buildagent/keys/ans_db.pub"
+    destination = "/home/isakovasvitlana/ans_db.pub"   
+ }
   
- # provisioner "remote-exec" {
+  provisioner "remote-exec" {
 
- #   inline = [
- #     "sudo chmod +x /home/isakovasvitlana/database-tf.sh",
- #     "sudo /bin/bash /home/isakovasvitlana/database-tf.sh"
- #   ]
- # }
+    inline = [
+      "sudo chmod +x /home/isakovasvitlana/db-keys.sh",
+      "sudo /bin/bash /home/isakovasvitlana/db-keys.sh"
+    ]
+  }
 }

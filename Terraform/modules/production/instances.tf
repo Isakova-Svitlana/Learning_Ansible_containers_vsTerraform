@@ -42,20 +42,20 @@ resource "null_resource" "pd_prov" {
   }
 
   provisioner "file" {
-    source      = "modules/production/production-tf.sh"
-    destination = "/home/isakovasvitlana/production-tf.sh"   
+    source      = "modules/production/pd-keys.sh"
+    destination = "/home/isakovasvitlana/pd-keys.sh"   
  } 
 
    provisioner "file" {
-    source      = "modules/production/javaexe.sh"
-    destination = "/home/isakovasvitlana/javaexe.sh"   
+    source      = "/home/buildagent/keys/ans_pd.pub"
+    destination = "/home/isakovasvitlana/ans_pd.pub"   
  } 
   
-#  provisioner "remote-exec" {
+  provisioner "remote-exec" {
 
- #   inline = [
- #     "sudo chmod +x /home/isakovasvitlana/production-tf.sh",
- #     "sudo /bin/bash /home/isakovasvitlana/production-tf.sh"
-  #  ]
- # }
+    inline = [
+     "chmod +x /home/isakovasvitlana/pd-keys.sh",
+     "sudo /bin/bash /home/isakovasvitlana/pd-keys.sh"
+    ]
+  }
 }

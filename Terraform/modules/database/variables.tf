@@ -36,6 +36,7 @@ default     = "/home/buildagent/keys/id_dataserver.pub"
 #default     = "D:\\dataserver\\id_dataserver.pub"
 }
 
+
 variable "private_key_path2" {
 description = "Path to the private key used for ssh access"
   default     = "/home/buildagent/keys/id_dataserver"
