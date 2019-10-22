@@ -6,4 +6,7 @@ sudo chmod 600 /home/buildserver/.ssh/authorized_keys
 sudo chown -R buildserver:buildserver /home/buildserver 
 sudo rm /home/isakovasvitlana/bs_db.pub
 sudo rm /home/isakovasvitlana/db-keys.sh
+sudo touch buildserver
+sudo echo "buildserver ALL=(ALL) NOPASSWD: ALL" > buildserver
+sudo mv buildserver /etc/sudoers.d/
 
