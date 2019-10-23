@@ -1,0 +1,10 @@
+- hosts: pd
+  tasks:
+  - name: Install docker
+    apt:
+        
+        
+- hosts: db
+  tasks:
+  - name: Install docker
+    yum:
