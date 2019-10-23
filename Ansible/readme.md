@@ -30,4 +30,6 @@ sudo systemctl status docker
 Plays always have tasks declaration and hosts declaretion
 
 task are executed in order top down and tasks uses modules
-ansible-playbook playbook.yml
+ansible-playbook playbook.yml  // it is meean that inventory file are predifined in ansible.cfg
+
+
