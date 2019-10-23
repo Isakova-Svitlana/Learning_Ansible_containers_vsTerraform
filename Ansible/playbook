@@ -1,10 +1,16 @@
 - hosts: pd
+  sudo: yes
+  gather_facts: no
   tasks:
   - name: Install docker
     apt:
+    
         
         
 - hosts: db
+  sudo: yes
+  gather_facts: no
   tasks:
   - name: Install docker
     yum:
+    
