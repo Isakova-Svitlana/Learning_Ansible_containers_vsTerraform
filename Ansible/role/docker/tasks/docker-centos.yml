@@ -1,0 +1,29 @@
+---
+- name: Update yum index
+    yum:
+      state: latest
+      update_cache: yes
+      force_apt_get: yes
+- name: Install docker dependencies
+    yum: name={{ item }} state=latest update_cache=yes
+    with_items:
+      - yum-utils
+      - device-mapper-persistent-data 
+      - lvm2
+- name: Yum add docker repo
+    get_url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+- name: YUM - install docker-ce
+     package:
+      name: docker-ce
+      state: latest
+- name: Enable docker systemd service
+    service:
+      name: docker
+      state: started
+      enabled: yes
+- name: Add users to docker group
+    user:
+      name: buildserver
+      groups: docker
+      append: yes

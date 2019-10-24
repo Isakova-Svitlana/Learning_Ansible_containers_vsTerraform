@@ -1,0 +1,42 @@
+---
+- name: Update apt index
+   apt:
+     state: latest
+     update_cache: yes
+     force_apt_get: yes
+- name: Install docker dependencies
+   apt: name={{ item }} state=latest update_cache=yes
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnup2
+      - software-properties-common
+- name: Docker key      
+   apt_key: 
+      url=https://download.docker.com/linux/debian/gpg 
+      state: present
+- name: Apt add docker repo
+   apt_repository: deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable
+      state: present
+      file: docker
+- name: Update apt index
+   apt:
+     state: latest
+     update_cache: yes
+     force_apt_get: yes
+- name: APT - install docker-ce
+   apt:
+     name: docker-ce
+     state: latest
+     update_cache: yes
+- name: Enable docker systemd service
+   service:
+     name: docker
+     state: started
+     enabled: yes
+- name: Add users to docker group
+   user:
+      name: buildserver
+      groups: docker
+      append: yes
