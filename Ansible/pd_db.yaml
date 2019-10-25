@@ -1,11 +1,11 @@
 ---
-- hosts: pd
+- hosts: db
   become: true
   gather_facts: yes
   roles:
   - docker
     
-- hosts: db
+- hosts: pd
   become: true
   gather_facts: yes
   roles:
