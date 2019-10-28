@@ -9,3 +9,9 @@ sudo rm /home/isakovasvitlana/pd-keys.sh
 sudo touch buildserver
 sudo echo "buildserver ALL=(ALL) NOPASSWD: ALL" > buildserver
 sudo mv buildserver /etc/sudoers.d/
+sudo mkdir /home/buildserver/microservices
+sudo mkdir /home/buildserver/microservices/carts
+sudo mkdir /home/buildserver/microservices/frontend
+sudo mkdir /home/buildserver/microservices/catalog
+sudo mkdir /home/buildserver/microservices/user
+sudo chown -R buildserver:buildserver

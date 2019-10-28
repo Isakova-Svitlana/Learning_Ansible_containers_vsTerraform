@@ -12,6 +12,7 @@
       - curl
       - gnupg2
       - software-properties-common
+      - mc
 - name: Docker key      
   apt_key:
      url: https://download.docker.com/linux/debian/gpg 

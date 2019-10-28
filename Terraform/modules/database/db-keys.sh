@@ -9,4 +9,7 @@ sudo rm /home/isakovasvitlana/db-keys.sh
 sudo touch buildserver
 sudo echo "buildserver ALL=(ALL) NOPASSWD: ALL" > buildserver
 sudo mv buildserver /etc/sudoers.d/
-
+sudo mkdir /home/buildserver/microservices
+sudo mkdir /home/buildserver/microservices/mongodb
+sudo mkdir /home/buildserver/microservices/databseX
+sudo chown -R buildserver:buildserver /home/buildserver/microservices
