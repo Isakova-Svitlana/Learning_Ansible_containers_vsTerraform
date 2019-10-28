@@ -47,6 +47,10 @@ resource "null_resource" "pd_prov" {
  } 
 
    provisioner "file" {
+    source      = "modules/production/docker.sh"
+    destination = "/home/isakovasvitlana/docker.sh" 
+ } 
+ provisioner "file" {
     source      = "/home/buildagent/keys/bs_pd.pub"
     destination = "/home/isakovasvitlana/bs_pd.pub"   
  } 
