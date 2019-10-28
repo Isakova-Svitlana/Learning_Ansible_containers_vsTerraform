@@ -13,5 +13,5 @@ sudo mkdir /home/buildserver/microservices
 sudo mkdir /home/buildserver/microservices/carts
 sudo mkdir /home/buildserver/microservices/frontend
 sudo mkdir /home/buildserver/microservices/catalog
-sudo mkdir /home/buildserver/microservices/user
-sudo chown -R buildserver:buildserver
+sudo chown -R buildserver:buildserver /home/buildserver/microservices
+sudo mv /home/isakovasvitlana/docker.sh /home/buildserver
