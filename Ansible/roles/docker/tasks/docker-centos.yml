@@ -28,3 +28,7 @@
       name: buildserver
       groups: docker
       append: yes
+- name: Create docker volume1
+  command: docker volume create --name Gatalogue_Mysql
+- name: Create docker volume2
+  command: docker volume create --name Garts_Mongodb
