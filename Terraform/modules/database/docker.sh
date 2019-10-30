@@ -19,7 +19,7 @@ if [ $1 == "mgdb" ]
     docker run -d --rm -p 27017:27017 --name=$name -v Garts_Mongodb:/data/db $name:$numb
   fi
 
-if [ $1 == "cataloguedb"]
+if [ $1 == "cataloguedb" ]
   then
     docker load -i microservices/mysql/$1:$2.tar
   fi
