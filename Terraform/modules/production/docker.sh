@@ -15,13 +15,14 @@ fi
   
 if [ $1 == "carts" ]
  then
-  docker load -i microservices/carts/$1:$2.tar
-  docker run -d --rm -p 8081:80 --name=carts $1:$2 "--spring.data.mongodb.host=10.156.15.229 --spring.data.mongo.port=27017"
+  docker load -i microservices/carts/$name:$numb.tar
+  docker run -d --rm -p 8081:80 --name=$name $1name:$numb "--spring.data.mongodb.host=10.156.15.229 --spring.data.mongo.port=27017"
   fi
         
 if [ $1 == "frontend" ]
  then
   docker load -i microservices/frontend/$1:$2.tar
+  docker run -d --rm -p 8099:8079 --name=$name $name:$numb
  fi
              
 if [ $1 == "catalogue" ]

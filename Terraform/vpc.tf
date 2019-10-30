@@ -17,3 +17,13 @@ allow {
   }
   target_tags = ["mgdb-27017"] 
 }
+
+resource "google_compute_firewall" "fedb-8099" {
+  name    = "fedb-8099"
+  network = "${var.var_network}"
+allow {
+    protocol = "tcp"
+    ports    = ["8099"]
+  }
+  target_tags = ["fedb-8099"] 
+}

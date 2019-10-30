@@ -15,11 +15,11 @@ fi
 
 if [ $1 == "mgdb" ]
   then
-    docker load -i microservices/mongodb/$1:$2.tar
-    docker run -d --rm -p 27017:27017 --name=mongodb $1:$2
+    docker load -i microservices/mongodb/$name:$numb.tar
+    docker run -d --rm -p 27017:27017 --name=$name -v Garts_Mongodb:/data/db $name:$numb
   fi
 
-if [ $1 == "frontend" ]
+if [ $1 == "mysql" ]
   then
     docker load -i microservices/mysql/$1:$2.tar
   fi
