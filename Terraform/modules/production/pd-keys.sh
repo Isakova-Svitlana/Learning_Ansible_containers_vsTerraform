@@ -16,3 +16,4 @@ sudo mkdir /home/buildserver/microservices/catalog
 sudo chown -R buildserver:buildserver /home/buildserver/microservices
 sudo mv /home/isakovasvitlana/docker.sh /home/buildserver
 sudo chown -R buildserver:buildserver /home/buildserver/docker.sh
+sudo chmod +x /home/buildserver/docker.sh
