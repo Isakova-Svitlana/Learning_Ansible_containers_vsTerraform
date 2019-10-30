@@ -27,5 +27,5 @@ if [ $1 == "frontend" ]
              
 if [ $1 == "catalogue" ]
   then
-  docker load -i microservices/catalogue/$1:$2.tar
+  docker load -i microservices/catalog/$1:$2.tar
   fi  
