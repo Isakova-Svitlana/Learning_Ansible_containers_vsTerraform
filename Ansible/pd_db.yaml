@@ -10,3 +10,13 @@
   gather_facts: yes
   roles:
   - docker
+  
+- hosts: docker_swarm_mngr
+  become: true
+  roles:
+  - docker_run
+  
+#- hosts: docker_swarm_worker
+#  become: true
+#  roles: 
+#  - docker_run

@@ -1,0 +1,8 @@
+---
+- name: Initializing docker swarm
+  docker_swarm:
+     state: present
+- name: Update swarm configuration
+  docker_swarm:
+     state: present
+     election_tick: 5
