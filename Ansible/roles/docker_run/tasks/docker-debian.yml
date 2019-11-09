@@ -25,9 +25,9 @@
 #      name: worker_token2
 #      token: "{{ swarm_token.stdout }}"
 
-- name: 
-  debug:
-      msg: "Worker token 1 is {{ hostvars['worker_token1']['token'] }}"
+#- name: 
+#  debug:
+#      msg: "Worker token 1 is {{ hostvars['worker_token1']['token'] }}"
 
 #- name: 
 #  debug:
@@ -65,6 +65,6 @@
 #- debug:              
 #    var=ansible_facts.default_ipv4.address  
 - debug: 
-    msg: "IP address database server 1 variaant is {{ hostvars['database'].ansible_facts.default_ipv4.address}}"
+    msg: "IP address database server 1 variant is {{ hostvars['database'].ansible_facts.default_ipv4.address}}"
 - debug: 
     msg: "IP address database server 2 variant is {{ hostvars['database']['ansible_default_ipv4']['address']}}"    

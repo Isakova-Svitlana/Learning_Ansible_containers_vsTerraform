@@ -3,32 +3,6 @@
   yum:
     state: latest
     update_cache: yes
-- name: Install docker dependencies
-  yum: name={{ item }} state=latest update_cache=yes
-  with_items:
-      - yum-utils
-      - device-mapper-persistent-data 
-      - lvm2
-      - mc
-- name: Yum add docker repo
-  get_url:
-    url: https://download.docker.com/linux/centos/docker-ce.repo
-    dest: /etc/yum.repos.d/docker-ce.repo
-- name: YUM - install docker-ce
-  package:
-      name: docker-ce
-      state: latest
-- name: Enable docker systemd service
-  service:
-      name: docker
-      state: started
-      enabled: yes
-- name: Add users to docker group
-  user:
-      name: buildserver
-      groups: docker
-      append: yes
-- name: Create docker volume1
-  command: docker volume create --name Gatalogue_Mysql
-- name: Create docker volume2
-  command: docker volume create --name Garts_Mongodb
+- name: Worker token from manager swarm node 
+  debug:
+      msg: "Worker token 1 is {{ hostvars['worker_token1']['token'] }}"  

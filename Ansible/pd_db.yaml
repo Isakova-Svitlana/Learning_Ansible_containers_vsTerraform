@@ -16,7 +16,7 @@
   roles:
   - docker_run
   
-#- hosts: docker_swarm_worker
-#  become: true
-#  roles: 
-#  - docker_run
+- hosts: docker_swarm_worker
+  become: true
+  roles: 
+  - docker_run
