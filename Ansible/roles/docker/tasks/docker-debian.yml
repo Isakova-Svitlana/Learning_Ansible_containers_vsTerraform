@@ -1,11 +1,11 @@
 ---
 - name: Update apt index
   apt:
-     state: installed
+     state: present
      update_cache: yes
      force_apt_get: yes
 - name: Install docker dependencies
-  apt: name={{ item }} state=installed update_cache=yes
+  apt: name={{ item }} state=present update_cache=yes
   with_items:
       - apt-transport-https
       - ca-certificates
@@ -17,6 +17,7 @@
 - name: Install Docker Module for Python
   pip:
      name: docker
+     state: present
 - name: Docker key
   apt_key:
      url: https://download.docker.com/linux/debian/gpg 
@@ -33,7 +34,7 @@
 - name: APT - install docker-ce
   apt:
      name: docker-ce
-     state: installed
+     state: present
      update_cache: yes
 - name: Enable docker systemd service
   service:
