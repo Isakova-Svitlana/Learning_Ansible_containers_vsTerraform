@@ -1,4 +1,9 @@
 ---
+- name: Remove  docker swarm
+  docker_swarm:
+        force: yes
+        state: absent
+
 - name: Initializing docker swarm
   docker_swarm:
      state: present
@@ -6,6 +11,19 @@
   docker_swarm:
      state: present
      election_tick: 5
+     
+#- name: Find out id swarm node 
+#  shell: "docker node ls -q -f name=mgdb-tf"
+#  register: node_mgdb
+  
+#- debug:
+#    var=node_mgdb.stdout 
+  
+#- name: Remove node from docker swarm
+#  docker_swarm:
+#        state: remove
+#        node_id: "{{ node_mgdb.stdout }}"
+        
 - name: Inspect swarm
   docker_swarm_info:
   ignore_errors: yes
@@ -15,27 +33,16 @@
   add_host:
       name: worker_token1
       token: "{{ result.swarm_facts.JoinTokens.Worker }}"          
-#      ip_addr: "{{ result.swarm_facts.advertise_addr }}"
 
-#- debug:
-#     var=result
 
-#- name: Extract token 
-#  shell: docker swarm join-token -q worker
-#  register: swarm_token
-  
-#- name: Add token to dummy host
-#  add_host:
-#      name: worker_token2
-#      token: "{{ swarm_token.stdout }}"
-
-#- name: 
-#  debug:
-#      msg: "Worker token 1 is {{ hostvars['worker_token1']['token'] }}"
-
-#- name: 
-#  debug:
-#      msg: "Worker token 2 is {{ hostvars['worker_token2']['token'] }}"
+- name: Create a network with driver options
+  docker_network:
+    name: shop-socks
+    driver: overlay
+    driver_options:
+        com.docker.network.overlay.name: net
+    state: present
+    attachable: yes            
                       
 - debug: 
     msg: "IP address database server 1 variant is {{ hostvars['database'].ansible_facts.default_ipv4.address}}"
