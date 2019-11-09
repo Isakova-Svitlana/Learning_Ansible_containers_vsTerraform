@@ -15,6 +15,10 @@
   add_host:
       name: worker_token1
       token: "{{ result.swarm_facts.JoinTokens.Worker }}"          
+#      ip_addr: "{{ result.swarm_facts.advertise_addr }}"
+
+#- debug:
+#     var=result
 
 #- name: Extract token 
 #  shell: docker swarm join-token -q worker
@@ -33,37 +37,6 @@
 #  debug:
 #      msg: "Worker token 2 is {{ hostvars['worker_token2']['token'] }}"
                       
-  
-#- name: Inform about basic flags
-#  debug:
-#      msg: |
-#        Was able to talk to docker daemon: {{ result.can_talk_to_docker }}
-#        Docker in Swarm mode: {{ result.docker_swarm_active }}
-#        This is a Manager node: {{ result.docker_swarm_manager }}      
-
-#- name: Get info on Docker Swarm and list of registered nodes
-#  docker_swarm_facts:
-#     nodes: yes
-#     tasks: yes
-#     services: yes
-#  register: result
-        
-#- name: Get info on Docker Swarm and extended list of registered nodes
-#  docker_swarm_info:
-#     nodes: yes
-#     verbose_output: yes
-# register: result
-
-#- debug:
-#    var=docker swarm join-token -q worker
-
-
-#- debug:
-#    var=result.swarm_facts.JoinTokens.Manager
-#    var=ansible_facts.default_ipv4.address
-
-#- debug:              
-#    var=ansible_facts.default_ipv4.address  
 - debug: 
     msg: "IP address database server 1 variant is {{ hostvars['database'].ansible_facts.default_ipv4.address}}"
 - debug: 

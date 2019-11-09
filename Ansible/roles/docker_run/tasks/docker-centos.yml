@@ -3,6 +3,15 @@
   yum:
     state: latest
     update_cache: yes
+    
 - name: Worker token from manager swarm node 
   debug:
-      msg: "Worker token 1 is {{ hostvars['worker_token1']['token'] }}"  
+      msg: "Worker token  is {{ hostvars['worker_token1']['token'] }}"
+
+#- name: Join to swarm as worker node
+#  docker_swarm:
+#      state: join
+#      join_token: "{{ hostvars['worker_token1']['token'] }}"
+#      remote_addrs: "{{ hostvars['production']['ansible_default_ipv4']['address']}}:2377"
+- name: Join to swarm as worker node
+  shell: "docker swarm join --token {{ hostvars['worker_token1']['token'] }} {{ hostvars['production']['ansible_default_ipv4']['address'] }}:2377"              
