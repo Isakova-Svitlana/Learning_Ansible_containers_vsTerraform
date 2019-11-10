@@ -1,16 +1,16 @@
 ---
-- name: Remove  docker swarm
-  docker_swarm:
-        force: yes
-        state: absent
+##- name: Remove  docker swarm
+##  docker_swarm:
+##        force: yes
+##        state: absent
 
-- name: Initializing docker swarm
-  docker_swarm:
-     state: present
-- name: Update swarm configuration
-  docker_swarm:
-     state: present
-     election_tick: 5
+##- name: Initializing docker swarm
+##  docker_swarm:
+##     state: present
+##- name: Update swarm configuration
+##  docker_swarm:
+##     state: present
+##     election_tick: 5
      
 #- name: Find out id swarm node 
 #  shell: "docker node ls -q -f name=mgdb-tf"
@@ -24,27 +24,65 @@
 #        state: remove
 #        node_id: "{{ node_mgdb.stdout }}"
         
-- name: Inspect swarm
-  docker_swarm_info:
-  ignore_errors: yes
-  register: result
+##- name: Inspect swarm
+##  docker_swarm_info:
+##  ignore_errors: yes
+##  register: result
   
-- name: Add token to dummy host1
-  add_host:
-      name: worker_token1
-      token: "{{ result.swarm_facts.JoinTokens.Worker }}"          
+##- name: Add token to dummy host1
+##  add_host:
+##      name: worker_token1
+##      token: "{{ result.swarm_facts.JoinTokens.Worker }}"          
 
 
-- name: Create a network with driver options
-  docker_network:
-    name: shop-socks
-    driver: overlay
-    driver_options:
-        com.docker.network.overlay.name: net
-    state: present
-    attachable: yes            
+##- name: Create a network with driver options
+##  docker_network:
+##    name: shop-socks
+##    driver: overlay
+##    driver_options:
+##        com.docker.network.overlay.name: net
+##    state: present
+##    attachable: yes            
+
+
+
+##- name: Pull docker from google repository 
+##  shell: "cat /home/buildserver/keys/docker_pull/docker_pull.json | docker login -u _json_key --password-stdin https://eu.gcr.io"
+##  register: login
+##  tags:
+##    - first
+##- debug:
+##    var=login
+
+- name: Docker Login
+  docker_login:
+      registry: https://eu.gcr.io
+      username: _json_key
+      debug: true
+      password: " {{ lookup('file', '/home/buildagent/keys/docker-pull/MyFirstProject-c828c313f537.json')}}"
+  register: res1
+ 
+- debug:
+    var=res1
+- name: Create a data container
+  docker_container:
+         name: carts
+         image: eu.gcr.io/united-aura-252016/carts:latest
+         command: "--spring.data.mongodb.host=10.0.1.62" 
+         state: started
+         pull: true
+ 
+#- name: pull an image
+#  shell: "docker pull eu.gcr.io/united-aura-252016/carts:64"
+#  register: res2
+  
+#- debug:
+#     var=res2   
+
+
+
                       
-- debug: 
-    msg: "IP address database server 1 variant is {{ hostvars['database'].ansible_facts.default_ipv4.address}}"
-- debug: 
-    msg: "IP address database server 2 variant is {{ hostvars['database']['ansible_default_ipv4']['address']}}"    
+#- debug:
+#    msg: "IP address database server 1 variant is {{ hostvars['database'].ansible_facts.default_ipv4.address}}"
+#- debug: 
+#    msg: "IP address database server 2 variant is {{ hostvars['database']['ansible_default_ipv4']['address']}}"    
