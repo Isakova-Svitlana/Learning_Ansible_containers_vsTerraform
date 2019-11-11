@@ -1,2 +1,0 @@
-uid=1002(buildagent) gid=1003(buildagent) groups=1003(buildagent) context=system_u:system_r:unconfined_service_t:s0
-uid=1002(buildagent) gid=1003(buildagent) groups=1003(buildagent) context=system_u:system_r:unconfined_service_t:s0

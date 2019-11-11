@@ -2,7 +2,7 @@ resource "google_compute_instance" "pd" {
   name         = "${format("%s","${var.var_name}")}"
   machine_type  = "custom-2-4096"
   zone          =   "${format("%s","${var.var_region}-b")}"
-  tags          = ["http-server","http-app-8081","https-server","fedb-8099"]
+  tags          = ["http-server","http-app-8081","https-server","catalog-8080"]
 
   boot_disk {
     initialize_params {

@@ -36,3 +36,37 @@
   command: docker volume create --name Gatalogue_Mysql
 - name: Create docker volume2
   command: docker volume create --name Garts_Mongodb
+  
+- name: Initializing docker swarm
+  docker_swarm:
+       state: present
+- name: Update swarm configuration
+  docker_swarm:
+       state: present
+       election_tick: 5
+         
+- name: Inspect swarm
+  docker_swarm_info:
+  ignore_errors: yes
+  register: result
+          
+- name: Add token to dummy host1
+  add_host:
+      name: worker_token1
+      token: "{{ result.swarm_facts.JoinTokens.Worker }}"
+      
+- name: Create a network with driver options
+  docker_network:
+      name: shop-socks
+      driver: overlay
+      state: present
+      attachable: yes
+      
+- name: Docker Login
+  docker_login:
+        registry: https://eu.gcr.io
+        username: _json_key
+        debug: true	
+        password: " {{ lookup('file', '/home/buildagent/keys/docker-pull/MyFirstProject-c828c313f537.json')}}"
+  register: res1                  
+                  

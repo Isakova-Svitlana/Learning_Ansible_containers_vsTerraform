@@ -46,3 +46,16 @@
       name: buildserver
       groups: docker
       append: yes
+      
+- name: Join to swarm as worker node
+  shell: "docker swarm join --token {{ hostvars['worker_token1']['token'] }} {{ hostvars['production']['ansible_default_ipv4']['address'] }}:2377"
+
+- name: Docker Login
+  docker_login:
+         registry: https://eu.gcr.io
+         username: _json_key
+         debug: true
+         password: " {{ lookup('file', '/home/buildagent/keys/docker-pull/MyFirstProject-c828c313f537.json')}}"
+  register: res1
+  
+  
