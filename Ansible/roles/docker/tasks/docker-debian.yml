@@ -41,8 +41,8 @@
      name: docker
      state: started
      enabled: yes
-#- name: Add users to docker group
-#  user:
-#      name: buildserver
-#      groups: docker
-#      append: yes
+- name: Add users to docker group
+  user:
+      name: buildserver
+      groups: docker
+      append: yes

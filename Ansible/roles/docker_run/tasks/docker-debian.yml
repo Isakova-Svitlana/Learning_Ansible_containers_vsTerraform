@@ -1,16 +1,16 @@
 ---
-##- name: Remove  docker swarm
-##  docker_swarm:
-##        force: yes
-##        state: absent
+- name: Remove  docker swarm
+  docker_swarm:
+        force: yes
+        state: absent
 
-##- name: Initializing docker swarm
-##  docker_swarm:
-##     state: present
-##- name: Update swarm configuration
-##  docker_swarm:
-##     state: present
-##     election_tick: 5
+- name: Initializing docker swarm
+  docker_swarm:
+     state: present
+- name: Update swarm configuration
+  docker_swarm:
+     state: present
+     election_tick: 5
      
 #- name: Find out id swarm node 
 #  shell: "docker node ls -q -f name=mgdb-tf"
@@ -24,25 +24,25 @@
 #        state: remove
 #        node_id: "{{ node_mgdb.stdout }}"
         
-##- name: Inspect swarm
-##  docker_swarm_info:
-##  ignore_errors: yes
-##  register: result
+- name: Inspect swarm
+  docker_swarm_info:
+  ignore_errors: yes
+  register: result
   
-##- name: Add token to dummy host1
-##  add_host:
-##      name: worker_token1
-##      token: "{{ result.swarm_facts.JoinTokens.Worker }}"          
+- name: Add token to dummy host1
+  add_host:
+      name: worker_token1
+      token: "{{ result.swarm_facts.JoinTokens.Worker }}"          
 
 
-##- name: Create a network with driver options
-##  docker_network:
-##    name: shop-socks
-##    driver: overlay
-##    driver_options:
-##        com.docker.network.overlay.name: net
-##    state: present
-##    attachable: yes            
+- name: Create a network with driver options
+  docker_network:
+    name: shop-socks
+    driver: overlay
+#    driver_options:
+#        com.docker.network.overlay.name: net
+    state: present
+    attachable: yes            
 
 
 
@@ -61,26 +61,71 @@
       debug: true
       password: " {{ lookup('file', '/home/buildagent/keys/docker-pull/MyFirstProject-c828c313f537.json')}}"
   register: res1
- 
-- debug:
-    var=res1
-- name: Create a data container
+
+#- debug:
+#    var=res1
+
+- name: Create a carts_swarm _overlay container
   docker_container:
-         name: carts
+         name: carts_swarm
          image: eu.gcr.io/united-aura-252016/carts:latest
-         command: "--spring.data.mongodb.host=10.0.1.62" 
+         command: "--spring.data.mongodb.host=mgdb_swarm" 
          state: started
+         detach: yes
+         interactive: yes
+         tty: no
          pull: true
- 
+         published_ports: 8081:80
+         networks:
+            - name: shop-socks
+
+
+
+
+- name: Create a catalogue_swarm _overlay container
+  docker_container:
+         name: catalogue_swarm
+         image: eu.gcr.io/united-aura-252016/catalogue:latest
+#         command: "--spring.data.mongodb.host=mgdb_swarm" 
+         state: started
+         detach: yes
+         interactive: yes
+         tty: no
+         pull: true
+         published_ports: 8080:80
+         networks:
+            - name: shop-socks
+
+
+
+- name: Create a frontend_swarm _overlay container
+  docker_container:
+         name: frontend_swarm
+         image: eu.gcr.io/united-aura-252016/frontend:latest
+#         command: "--spring.data.mongodb.host=mgdb_swarm" 
+         state: started
+         detach: yes
+         interactive: yes
+         tty: no
+         pull: true
+         published_ports: 8099:8079
+         networks:
+            - name: shop-socks
+
+
+
+
+            
+- name: Clean up Docker unused images
+  docker_prune:
+      images: yes
+      images_filters:
+            dangling: true            
 #- name: pull an image
 #  shell: "docker pull eu.gcr.io/united-aura-252016/carts:64"
 #  register: res2
-  
 #- debug:
 #     var=res2   
-
-
-
                       
 #- debug:
 #    msg: "IP address database server 1 variant is {{ hostvars['database'].ansible_facts.default_ipv4.address}}"
