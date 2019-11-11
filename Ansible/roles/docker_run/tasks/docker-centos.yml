@@ -53,20 +53,23 @@
            image: eu.gcr.io/united-aura-252016/cataloguedb:latest 
            state: started
            pull: true
+           env:
+             MYSQL_ROOT_PASSWORD: "12345"
+             MYSQL_DATABASE: "socksdb"
            published_ports: 
                - 3306:3306
                - 33060:33060
            volumes:
               - Catalogue_Mysql:/var/lib/mysql
-  register: res7
+#  register: res7
 
 
 - name: Attach network overlay
   shell: "docker network connect shop-socks cataloguedb_swarm"
-  register: res6
+#  register: res6
 
-- debug:
-    var=rez7
+#- debug:
+#    var=res7
    
 #- debug:
 #    var=res5  
