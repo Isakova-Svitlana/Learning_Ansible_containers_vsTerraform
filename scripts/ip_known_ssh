@@ -1,0 +1,33 @@
+#!/bin/bash
+config="/home/buildagent/.ssh/config"
+ansible="hosts"
+if [ -e $config ]
+then
+  rm $config
+fi
+  cd /opt/git/Learning_Ansible_containers_vsTerraform/Terraform/ 
+  production_ip=$(terraform output pd_internal_ip)
+  database_ip=$(terraform output db_internal_ip)
+#  echo $production_ip
+#  echo $database_ip
+
+   echo "Host github.com" >> $config
+   echo "HostName github.com" >> $config
+   echo "StrictHostKeyChecking no" >> $config
+   echo "IdentityFile /home/buildagent/.ssh/id_rsa" >> $config  
+   echo "      ">>$config
+   echo "Host $production_ip" >> $config
+   echo "HostName $production_ip" >> $config
+   echo "StrictHostKeyChecking no" >> $config
+   echo "User buildserver" >> $config
+   echo "IdentityFile /home/buildagent/.ssh/bs_pd" >> $config            
+   echo "      ">>$config
+   echo "Host $database_ip" >> $config
+   echo "HostName $database_ip" >> $config
+   echo "StrictHostKeyChecking no" >> $config
+   echo "User buildserver" >> $config
+   echo "IdentityFile /home/buildagent/.ssh/bs_db" >> $config            
+sudo chmod 600 /home/buildagent/.ssh/config
+
+#  scp -oStrictHostKeyChecking=no target/*.jar buildserver@$production_ip:Demo_part1_cards/
+#  ssh buildserver@$productionp sudo systemctl restart carts.service
