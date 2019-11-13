@@ -17,7 +17,7 @@
 - name: Install Docker Module for Python
   pip:
      name: docker
-     state: present
+     state: latest
 - name: Docker key
   apt_key:
      url: https://download.docker.com/linux/debian/gpg 
@@ -41,11 +41,16 @@
      name: docker
      state: started
      enabled: yes
+     
 - name: Add users to docker group
   user:
       name: buildserver
       groups: docker
       append: yes
+
+- name: Leave swarm for a node
+  docker_swarm:
+      state: absent
       
 - name: Join to swarm as worker node
   shell: "docker swarm join --token {{ hostvars['worker_token1']['token'] }} {{ hostvars['database']['ansible_default_ipv4']['address'] }}:2377"

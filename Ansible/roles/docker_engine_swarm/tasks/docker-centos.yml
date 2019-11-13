@@ -13,7 +13,8 @@
       - python-pip
 - name: Install Docker Module for Python
   pip:
-    name: docker      
+    name: docker
+    state: latest      
 - name: Yum add docker repo
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
@@ -36,10 +37,17 @@
   command: docker volume create --name Gatalogue_Mysql
 - name: Create docker volume2
   command: docker volume create --name Garts_Mongodb
+
+- name: Remove  docker swarm
+  docker_swarm:
+        force: yes
+        state: absent
   
 - name: Initializing docker swarm
   docker_swarm:
        state: present
+#  ignore_errors: true
+       
 - name: Update swarm configuration
   docker_swarm:
        state: present

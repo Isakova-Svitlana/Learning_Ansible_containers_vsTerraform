@@ -7,6 +7,7 @@
          state: started
          detach: yes
          interactive: yes
+         recreate: yes
          tty: no
          pull: true
          published_ports: 8081:80
