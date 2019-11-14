@@ -9,7 +9,7 @@ fi
  cd terraform/Terraform 
  terraform init
  terraform plan
- terraform plan -out=terraform/Terraform/plan.txt
+ terraform plan -out=plan.txt
  terraform apply -auto-approve
  
  production_ip=$(terraform output pd_internal_ip)
