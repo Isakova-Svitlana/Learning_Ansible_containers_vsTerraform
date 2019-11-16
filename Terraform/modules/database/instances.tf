@@ -43,10 +43,10 @@ resource "null_resource" "mgdb_prov" {
     source      = "modules/database/db-keys.sh"
     destination = "/home/isakovasvitlana/db-keys.sh"   
  }  
-  provisioner "file" {
-    source      = "modules/database/docker.sh"
-    destination = "/home/isakovasvitlana/docker.sh"   
- }  
+#  provisioner "file" {
+#    source      = "modules/database/docker.sh"
+#    destination = "/home/isakovasvitlana/docker.sh"   
+# }  
  provisioner "file" {
     source      = "/home/buildagent/keys/bs_db.pub"
     destination = "/home/isakovasvitlana/bs_db.pub"   

@@ -5,10 +5,11 @@ if [ -e $config ]
 then
   rm $config
 fi
- cd /opt/git/Learning_Ansible_containers_vsTerraform/Terraform/ 
+# cd /opt/git/Learning_Ansible_containers_vsTerraform/Terraform/
+ cd terraform/Terraform 
  terraform init
  terraform plan
- terraform plan -out=/opt/git/Learning_Ansible_containers_vsTerraform/Terraform/plan.txt
+ terraform plan -out=plan.txt
  terraform apply -auto-approve
  
  production_ip=$(terraform output pd_internal_ip)
@@ -30,7 +31,7 @@ fi
   echo "User buildserver" >> $config
   echo "IdentityFile /home/buildagent/.ssh/bs_db" >> $config            
  sudo chmod 600 /home/buildagent/.ssh/config
- cd /opt/git/Learning_Ansible_containers_vsTerraform/Terraform
+# cd /opt/git/Learning_Ansible_containers_vsTerraform/Terraform
 
 #   cd /opt/git/Learning_Ansible_containers_vsTerraform/Terraform/ 
    production_ip=$(terraform output pd_internal_ip)
