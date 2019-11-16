@@ -1,1 +1,1 @@
-Terraform configuration file for instances
+Terraform configuration file for instance
