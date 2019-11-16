@@ -1,0 +1,233 @@
+1) Enable Google container registry API
+   API & Services - > Library -> Google Container API Enable
+  
+2) Install and initialize the Cloud SDK.
+  - These include the gcloud, gsutil, and bq command line tools.
+  If you are using an instance on Google Compute Engine, Cloud SDK is installed by default.
+ 
+  gcloud init - process configuration
+  [2] Log in with a new account
+  Please enter your numeric choice:  2
+  ......
+  ......
+  ......
+  Enter verification code: 4/swFBWiyIiOakBi32D4N5myjuPq-BXhv6D4mUF3Mcvl9Ig04NFfWEftA
+  You are logged in as: [isakovasvitlana@gmail.com]. 
+  
+  Please enter numeric choice or text value (must exactly match list 
+  item):  2
+  
+  Your current project has been set to: [united-aura-252016].
+  
+  Do you want to configure a default Compute Region and Zone? (Y/n)?  
+  
+  Do you want to configure a default Compute Region and Zone? (Y/n)?  n
+  
+  Created a default .boto configuration file at [/home/buildagent/.boto]. See this file and
+  [https://cloud.google.com/storage/docs/gsutil/commands/config] for more
+  information about configuring Google Cloud Storage.
+  Your Google Cloud SDK is configured and ready to use!
+  
+  * Commands that require authentication will use isakovasvitlana@gmail.com by default
+  * Commands will reference project `united-aura-252016` by default
+  Run `gcloud help config` to learn how to change individual settings
+  
+  This gcloud configuration is called [default]. You can create additional configurations if you work with multiple accounts and/or projects.
+  Run `gcloud topic configurations` to learn more.
+  
+  Some things to try next:
+  
+  * Run `gcloud --help` to see the Cloud Platform services you can interact with. And run `gcloud help COMMAND` to get help on any gcloud command.
+  * Run `gcloud topic --help` to learn about advanced features of the SDK like arg files and output formatting
+  [buildagent@tcbuild Google_registry]
+  
+  gcloud info
+  gcloud config list
+  
+  [buildagent@tcbuild Google_registry]$ gcloud config configurations list
+  NAME     IS_ACTIVE  ACCOUNT                    PROJECT             DEFAULT_ZONE  DEFAULT_REGION
+  default  True       isakovasvitlana@gmail.com  united-aura-252016
+  [buildagent@tcbuild Google_registry]$ 
+  
+  
+  ОТПРАВИТЬ ОТЗЫВ
+  Container Registry
+  Quickstart for Container Registry
+  Container Registry is a private container image registry that runs on Google Cloud Platform.
+  
+  This quickstart shows you how to:
+  
+  Build a Docker image
+  Push the image to your project's Container Registry
+  Pull the image from your project's Container Registry
+  Before you begin
+  In the GCP Console, on the project selector page, select or create a GCP project.
+  
+  Note: If you don't plan to keep the resources that you create in this procedure, create a project instead of selecting an existing project. After you finish these steps, you can delete the project, removing all resources associated with the project.
+  GO TO THE PROJECT SELECTOR PAGE
+  
+  Make sure that billing is enabled for your Google Cloud Platform project. Learn how to enable billing.
+  
+  Enable the Container Registry API.
+  ENABLE THE API
+  
+  Install and initialize the Cloud SDK.
+  Install Docker. If you're using a Linux-based operating system, such as Ubuntu or Debian, add your username to the docker group so that you can run Docker without using sudo:
+  sudo usermod -a -G docker ${USER}
+  Log out and log back in for group membership changes to take effect. If you are using a virtual machine, you may need to restart the virtual machine for membership changes to take effect.
+  
+  Caution: The docker group is equivalent to the root user. See Docker's documentation for details on how this affects the security of your system.
+  
+  Open Docker. To ensure that Docker is running, run the following Docker command, which returns the current time and date:
+  docker run busybox date
+  For this quickstart, use either Cloud Shell or any environment where the Cloud SDK is installed.
+  
+  Note: If your environment doesn't support the gcloud command-line tool, such as a continuous integration system, see Using Container Registry with Third-Party Solutions.
+  Build a Docker image
+  For this quickstart, build the following Docker image so that you have an image to push to Container Registry. This Docker image contains a small Python web app. This app uses the Flask web framework to serve a web page which displays the message "Hello, World!"
+  
+  To create the Docker image:
+  
+  Create a directory to store the three Docker image files.
+  
+  In this directory, create three files: Dockerfile, requirements.txt, and app.py. See the examples below for what you'll need to put in the contents of each file:
+  
+  DOCKERFILEREQUIREMENTS.TXTAPP.PY
+  # The Dockerfile defines the image's environment
+  # Import Python runtime and set up working directory
+  FROM python:2.7-alpine
+  WORKDIR /app
+  ADD . /app
+  
+  # Install any necessary dependencies
+  RUN pip install -r requirements.txt
+  
+  # Open port 80 for serving the webpage
+  EXPOSE 80
+  
+  # Run app.py when the container launches
+  CMD ["python", "app.py"]
+  To build the Docker image, run the following Docker command from the directory containing the image's files:
+  
+  docker build -t quickstart-image .
+  You've now created a Docker image on your local machine.
+  
+  Caution: The docker group is equivalent to the root user. See Docker's documentation for details on how this affects the security of your system.
+  
+  Add the image to Container Registry
+  Configure docker to use the gcloud command-line tool as a credential helper
+  Before you can push or pull images, you must configure Docker to use the gcloud command-line tool to authenticate requests to Container Registry. 
+  
+  [buildagent@tcbuild Google_registry]$ gcloud auth configure-docker
+  The following settings will be added to your Docker config file 
+  located at [/home/buildagent/.docker/config.json]:
+   {
+     "credHelpers": {
+        "gcr.io": "gcloud", 
+        "us.gcr.io": "gcloud", 
+        "eu.gcr.io": "gcloud", 
+        "asia.gcr.io": "gcloud", 
+        "staging-k8s.gcr.io": "gcloud", 
+        "marketplace.gcr.io": "gcloud"
+            }
+                }
+Do you want to continue (Y/n)? y
+
+Docker configuration file updated.
+
+To push a new image to Container Registry, you need to first tag it with the registry name, as described below.
+
+Installed the most recent version of the Cloud SDK, which includes the gcloud command-line tool
+
+Installed Docker
+
+gcloud as a Docker credential helper
+
+gcloud auth configure-docker  
+
+We strongly recommend that you use this method when possible. It provides secure, short-lived access to your project resources.
+
+docker tag carts:%build.number% eu.gcr.io/united-aura-252016/carts:%build.number%
+docker push eu.gcr.io/united-aura-252016/carts:%build.number%
+
+[buildagent@tcbuild Google_registry]$ gcloud container images list-tags eu.gcr.io/united-aura-252016/carts
+DIGEST        TAGS  TIMESTAMP
+6097cea3f54c  64    2019-11-05T18:31:56
+[buildagent@tcbuild Google_registry]$
+
+pd-tf docker pull from google container registry 
+
+gcloud auth configure-docker
+The following settings will be added to your Docker config file 
+located at [/home/buildserver/.docker/config.json]:
+ {
+   "credHelpers": {
+     "gcr.io": "gcloud", 
+     "us.gcr.io": "gcloud", 
+     "eu.gcr.io": "gcloud", 
+     "asia.gcr.io": "gcloud", 
+     "staging-k8s.gcr.io": "gcloud", 
+     "marketplace.gcr.io": "gcloud"
+}
+    }
+                             
+Do you want to continue (Y/n)?  y
+                             
+Docker configuration file updated.
+
+docker pull eu.gcr.io/united-aura-252016/carts:64
+ERROR: (gcloud.auth.docker-helper) You do not currently have an active account selected.
+Please run:
+
+  $ gcloud auth login
+  
+  to obtain new credentials, or if you have already logged in with a
+  different account:
+  
+    $ gcloud config set account ACCOUNT
+    
+    to select an already authenticated account to use.
+    Error response from daemon: unauthorized:
+    You don't have the needed permissions to perform this operation, and you may have invalid credentials. 
+    To authenticate your request, follow the steps in: https://cloud.google.com/container-registry/docs/advanced-authentication
+    
+buildserver@pd-tf:~$ docker pull eu.gcr.io/united-aura-252016/carts:64
+    64: Pulling from united-aura-252016/carts
+    709515475419: Pull complete 
+    d1c225ed7c34: Pull complete 
+    887f300163b6: Pull complete 
+    8fdba220447e: Pull complete 
+    b0243426f2b8: Pull complete 
+    Digest: sha256:6097cea3f54c30640888968df48d67e0c7dcba92e5e75dd654fa176a72c96e28
+    Status: Downloaded newer image for eu.gcr.io/united-aura-252016/carts:64
+    eu.gcr.io/united-aura-252016/carts:64
+    
+buildserver@pd-tf:~$ docker images
+    REPOSITORY                           TAG                 IMAGE ID            CREATED             SIZE
+    eu.gcr.io/united-aura-252016/carts   64                  a7d3743f541c        56 minutes ago      171MB
+    catalogue                            22                  e595ec6bf33d        2 days ago          92.1MB
+    catalogue                            21                  eb6e7276027f        2 days ago          92.1MB
+    catalogue                            20                  c85b07c22d65        2 days ago          92.1MB
+    catalogue                            19                  095589dbbec1        2 days ago          92.1MB
+    carts                                63                  9fad5ba3fc8c        2 days ago          171MB
+    golang                               1.7                 225948c9a8b1        2 years ago         676MB
+    buildserver@pd-tf:~$ 
+    
+    AUTHENTICATION METHOD
+
+JSON key file
+    
+A service account JSON key file is a long-lived credential that is scoped to a specific GCP Console project and its resources.
+JSON for Terraform 
+Creating two service accounts
+1)docker-push with roles storage.admin(read/write) - json.key
+2)docker-pull with roles storage.ViewObject(read) - json.key
+[buildagent@tcbuild docker-push]$ cat MyFirstProject-d93f4ea454d2.json | docker login -u _json_key --password-stdin https://eu.gcr.io
+WARNING! Your password will be stored unencrypted in /home/buildagent/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference
+
+/commandline/login/#credentials-store
+
+Login Succeeded
+[buildagent@tcbuild docker-push]$     

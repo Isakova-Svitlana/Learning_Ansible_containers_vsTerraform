@@ -1,0 +1,104 @@
+
+buildserver@pd-tf:~$ docker swarm init
+Swarm initialized: current node (ui86awh7j106v4vsrguta33ut) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+docker swarm join --token SWMTKN-1-1i6xgn33dwm9sqrl8hklvw0daoruhc9iribi5qknlmnn3agdjk-afuddcz1j9g5gz4szkxvfeqi6 10.156.0.11:2377
+    
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+sudo ifconfig
+
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1460
+      inet 10.156.0.11  netmask 255.255.255.255  broadcast 10.156.0.11
+      inet6 fe80::4001:aff:fe9c:b  prefixlen 64  scopeid 0x20<link>
+      ether 42:01:0a:9c:00:0b  txqueuelen 1000  (Ethernet)
+      RX packets 22637  bytes 365006037 (348.0 MiB)
+      RX errors 0  dropped 0  overruns 0  frame 0
+      TX packets 21358  bytes 1828477 (1.7 MiB)
+      TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+      
+[buildserver@mgdb-tf ~]$ docker swarm join --token SWMTKN-1-1i6xgn33dwm9sqrl8hklvw0daoruhc9iribi5qknlmnn3agdjk-afuddcz1j9g5gz4szkxvfeqi6 10.156.0.11:2377
+This node joined a swarm as a worker.
+
+buildserver@pd-tf:~$ docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+o2o5f0xtajku70cqkb8s34k0i     mgdb-tf             Ready               Active                                  19.03.4
+ui86awh7j106v4vsrguta33ut *   pd-tf               Ready               Active              Leader              19.03.4
+
+[buildserver@mgdb-tf ~]$ docker service ls
+Error response from daemon: This node is not a swarm manager. Worker nodes can't be used to view or modify cluster state.
+Please run this command on a manager node or promote the current node to a manager.
+
+buildserver@pd-tf:~$ docker network create --driver overlay --attachable socks-shop-net
+512q4pxuqmkdczf2twogtwg00
+buildserver@pd-tf:~$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+685ff70b0362        bridge              bridge              local
+06732e52ebfa        docker_gwbridge     bridge              local
+d966771388b0        host                host                local
+bkr2ubgvp1to        ingress             overlay             swarm
+600b99ebd94c        none                null                local
+512q4pxuqmkd        socks-shop-net      overlay             swarm
+
+[buildserver@mgdb-tf ~]$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+8f828314e713        bridge              bridge              local
+d6ee0f935e79        docker_gwbridge     bridge              local
+987eff4bf3c2        host                host                local
+bkr2ubgvp1to        ingress             overlay             swarm
+b7f180f2c72d        none                null                local
+
+***************************************************************
+docker service create --network socks-shop-net --name mgdb -p 27017:27017 mgdb:29
+Error: No such network: socks-shop-net
+
+buildserver@pd-tf:~$ docker service create --network socks-shop-net -p 8081:80  --name carts_swarm carts:62
+image carts:62 could not be accessed on a registry to record
+its digest. Each node will access carts:62 independently,
+possibly leading to different nodes running different
+versions of the image.
+
+mocx49v77xmlwgh0r5faam6xw
+overall progress: 1 out of 1 tasks 
+1/1: running   [==================================================>] 
+verify: Service converged
+
+buildserver@pd-tf:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+mocx49v77xml        carts_swarm         replicated          1/1                 carts:62            *:8081->80/tcp
+buildserver@pd-t
+
+buildserver@pd-tf:~$ docker service rm
+*******************************************************************************
+buildserver@pd-tf:~$ docker run -d -it  --network socks-shop-net -p 8081:80  --name carts_swarm  carts:62 "--spring.data.mongodb.host=10.0.1.62"
+docker run -d --name mgdb -p  --network socks-shop-net mgdb:29
+
+docker run -d -it  --network socks-shop-net -p 8080:80 --name catalogue_swarm catalogue:19 /bin/sh
+
+docker build -f docker/catalogue/Dockerfile .
+[buildagent@tcbuild 9f7ebda95f508cfa]$ docker run -it --name cat cat_swarm:latest
+images: "./images/"
+Abs(images): "/images" (<nil>)
+Getwd: "/" (<nil>)
+ls: ["images/WAT.jpg" "images/WAT2.jpg" "images/bit_of_leg_1.jpeg" "images/bit_of_leg_2.jpeg" "images/catsocks.jpg" "images/catsocks2.jpg" "images/classic.jpg" "images/classic2.jpg" "images/colourful_socks.jpg" "images/cross_1.jpeg" "images/cross_2.jpeg" "images/holy_1.jpeg" "images/holy_2.jpeg" "images/holy_3.jpeg" "images/puma_1.jpeg" "images/puma_2.jpeg" "images/rugby_socks.jpg" "images/sock.jpeg" "images/weave1.jpg" "images/weave10.jpg" "images/weave2.jpg" "images/weave3.jpg" "images/weave4.jpg" "images/weave5.jpg" "images/weave6.jpg" "images/weave7.jpg" "images/weave8.jpg" "images/weave9.jpg" "images/youtube_1.jpeg" "images/youtube_2.jpeg"]
+ts=2019-11-03T14:11:58Z caller=main.go:119 Error="Unable to connect to Database" DSN=catalogue_user:default_password@tcp(catalogue-db:3306)/socksdb
+ts=2019-11-03T14:11:58Z caller=main.go:147 transport=HTTP port=80
+
+[buildagent@tcbuild 9f7ebda95f508cfa]$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+cat_swarm           latest              3ebbe04319d8        7 seconds ago       120MB
+<none>              <none>              992e17c3a3ad        16 seconds ago      760MB
+mysql               5.7                 cd3ed0dfff7e        2 weeks ago         437MB
+alpine              3.4                 b7c5ffe56db7        9 months ago        4.82MB
+golang              1.7                 225948c9a8b1        2 years ago         676MB
+java  
+
+
+
+
+
+
+
+
